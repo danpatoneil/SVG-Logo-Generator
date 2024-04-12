@@ -3,8 +3,8 @@
     <html>
     <body>
         <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="200" height="200" x="0" y="25" fill="turquoise" />
-                    <text x="50" y="130" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">MJO</text>
+            <polygon points="150,0 265.5,200 34.5,200" fill="brown" />
+            <text x="100" y="150" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">abd</text>
         </svg>
     </body>
     </html>
