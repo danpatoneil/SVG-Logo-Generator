@@ -89,7 +89,6 @@ function generateSVG(data){
             break;
     }
     const fileData = logoFileStart+logoFileShape+logoFileEnd;
-    console.log(fileData);
     fs.writeFile('logo.svg', fileData, (err) =>
         err ? console.error(err) : console.log('Success!')
     );
