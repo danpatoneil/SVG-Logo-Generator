@@ -18,8 +18,8 @@ inquirer
             name: 'text',
             message: 'Please enter the text for your logo, you can enter up to 3 characters',
             validate: (input) => {//validate checks if the provided function returns true and if not allows the user to reattempt until it does
-                if(input.length<=3) return true;//this validate simply checks if the input is less than 3 characters
-                else return 'Your text was more than 3 characters, please enter only 3 characters';
+                if(input.length<=3&&input.length>=1) return true;//this validate simply checks if the input is less than 3 characters
+                else return 'Your text was either less than 1 or more than 3 characters, please enter only 1-3 characters';
             },
         },
         {
@@ -44,26 +44,23 @@ inquirer
         switch (data.shape) {
             case 'Circle':
                 const circle = new Circle(data.text, data.color)
-                console.log(circle.render());
-                // fs.writeFile('logo.svg', circle.render(), (err) =>
-                //     err ? console.error(err) : console.log('Generated logo.svg')
-                // );
+                fs.writeFile('logo.svg', circle.render(), (err) =>
+                    err ? console.error(err) : console.log('Generated logo.svg')
+                );
                 break;
 
             case 'Triangle':
                 const triangle = new Triangle(data.text, data.color)
-                console.log(triangle.render());
-                // fs.writeFile('logo.svg', circle.render(), (err) =>
-                //     err ? console.error(err) : console.log('Generated logo.svg')
-                // );
+                fs.writeFile('logo.svg', triangle.render(), (err) =>
+                    err ? console.error(err) : console.log('Generated logo.svg')
+                );
                 break;
 
             case 'Square':
                 const square = new Square(data.text, data.color)
-                console.log(square.render());
-                // fs.writeFile('logo.svg', circle.render(), (err) =>
-                //     err ? console.error(err) : console.log('Generated logo.svg')
-                // );
+                fs.writeFile('logo.svg', square.render(), (err) =>
+                    err ? console.error(err) : console.log('Generated logo.svg')
+                );
                 break;
 
             default:

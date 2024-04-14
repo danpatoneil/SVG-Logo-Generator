@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+        <html>
+        <body>
+            <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="100" fill="aquamarine" />
+                <text x="65" y="110" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">ABC</text>
+            </svg>
+        </body>
+        </html>

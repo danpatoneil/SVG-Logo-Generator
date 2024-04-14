@@ -26,8 +26,11 @@
   Users interested in contributing should feel free to make forks of this project. Suggestions of things to work on might be adding different shapes and the ability for users to select their text font. Also, some programmatic way to select a color for the text so it won't clash with the shape would be nice.
 
   ## Tests
-  Working on it
-
+  Users can test this project by opening a node.js terminal on the lib folder and running
+  ```
+  npm test
+  ```
+  which will run a test file called shapes.test.js and show that the constructors and setter functions data validate and the render functions return correct SVG text.
   ## Contact
   My github is [danaptoneil](https://github.com/danaptoneil)
 

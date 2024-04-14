@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+        <html>
+        <body>
+            <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="150,0 265.5,200 34.5,200" fill="#508" />
+                <text x="100" y="150" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">MJO</text>
+            </svg>
+        </body>
+        </html>
