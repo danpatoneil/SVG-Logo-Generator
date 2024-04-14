@@ -1,58 +1,21 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
+const Square = require('./lib/square.js');
+const Triangle = require('./lib/triangle.js');
+const Circle = require('./lib/circle.js');
 
-//packaged into an exportable function
-function SVGGenerator() {
-}
-SVGGenerator.prototype.generateSVG = function(data) {
-    //there is no user input sanitization step here because the user input was already sanitized by the validate functions above
-    const logoFileStart = `
-    <!DOCTYPE html>
-    <html>
-    <body>
-        <svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">`;
-        //because both the start and end of the SVG file are going to be the same, I stored them into template literals so I could concatenate them easily later
-    const logoFileEnd = `
-        </svg>
-    </body>
-    </html>`
-    let logoFileShape = '';
-    switch (data.shape) {//this uses a switch statement because there were multiple options all outputting the similar data
-        case "Circle":
-            logoFileShape = `
-            <circle cx="100" cy="100" r="100" fill="${data.color}" />
-            <text x="65" y="110" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">${data.logoText}</text>`
-            break;
 
-        case "Square": //I wanted to simply put the data.shape into the start of the tag, but the tags aren't named the same as my inputs and the numbers change too much between options
-            logoFileShape = `
-                    <rect width="200" height="200" x="0" y="25" fill="${data.color}" />
-                    <text x="50" y="130" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">${data.logoText}</text>`
-            break;
 
-        case "Triangle":
-            logoFileShape = `
-            <polygon points="150,0 265.5,200 34.5,200" fill="${data.color}" />
-            <text x="100" y="150" font-size="xxx-large" stroke="black" stroke-width="2" fill="white">${data.logoText}</text>`
-            break;// all the numbers on this are just adjusted manually, I didn't know of a more programmatic way of determining the correct positions for these
+const CSS_COLORS = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgray', 'darkgrey', 'darkgreen', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'grey', 'green', 'greenyellow', 'honeydew', 'hotpink', 'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 'lightgoldenrodyellow', 'lightgray', 'lightgrey', 'lightgreen', 'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow', 'lime', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive', 'olivedrab', 'orange', 'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen'];
+const CSS_Hexcode_regex = new RegExp('^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
 
-        default:
-            break;
-    }
-    const fileData = logoFileStart+logoFileShape+logoFileEnd;//concatenate the 3 strings together, write them to file, and we're done here
-    fs.writeFile('logo.svg', fileData, (err) =>
-        err ? console.error(err) : console.log('Generated logo.svg')
-    );
 
-}
-SVGGenerator.prototype.getInput = function() {
-    const CSS_COLORS = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'azure', 'beige', 'bisque', 'black', 'blanchedalmond', 'blue', 'blueviolet', 'brown', 'burlywood', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cornsilk', 'crimson', 'cyan', 'darkblue', 'darkcyan', 'darkgoldenrod', 'darkgray', 'darkgrey', 'darkgreen', 'darkkhaki', 'darkmagenta', 'darkolivegreen', 'darkorange', 'darkorchid', 'darkred', 'darksalmon', 'darkseagreen', 'darkslateblue', 'darkslategray', 'darkslategrey', 'darkturquoise', 'darkviolet', 'deeppink', 'deepskyblue', 'dimgray', 'dimgrey', 'dodgerblue', 'firebrick', 'floralwhite', 'forestgreen', 'fuchsia', 'gainsboro', 'ghostwhite', 'gold', 'goldenrod', 'gray', 'grey', 'green', 'greenyellow', 'honeydew', 'hotpink', 'indianred', 'indigo', 'ivory', 'khaki', 'lavender', 'lavenderblush', 'lawngreen', 'lemonchiffon', 'lightblue', 'lightcoral', 'lightcyan', 'lightgoldenrodyellow', 'lightgray', 'lightgrey', 'lightgreen', 'lightpink', 'lightsalmon', 'lightseagreen', 'lightskyblue', 'lightslategray', 'lightslategrey', 'lightsteelblue', 'lightyellow', 'lime', 'limegreen', 'linen', 'magenta', 'maroon', 'mediumaquamarine', 'mediumblue', 'mediumorchid', 'mediumpurple', 'mediumseagreen', 'mediumslateblue', 'mediumspringgreen', 'mediumturquoise', 'mediumvioletred', 'midnightblue', 'mintcream', 'mistyrose', 'moccasin', 'navajowhite', 'navy', 'oldlace', 'olive', 'olivedrab', 'orange', 'orangered', 'orchid', 'palegoldenrod', 'palegreen', 'paleturquoise', 'palevioletred', 'papayawhip', 'peachpuff', 'peru', 'pink', 'plum', 'powderblue', 'purple', 'red', 'rosybrown', 'royalblue', 'saddlebrown', 'salmon', 'sandybrown', 'seagreen', 'seashell', 'sienna', 'silver', 'skyblue', 'slateblue', 'slategray', 'slategrey', 'snow', 'springgreen', 'steelblue', 'tan', 'teal', 'thistle', 'tomato', 'turquoise', 'violet', 'wheat', 'white', 'whitesmoke', 'yellow', 'yellowgreen'];
-    const CSS_Hexcode_regex = new RegExp('^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$');
+
 inquirer
     .prompt([
-        {// logoText is the input the user enters for what 1-3 letters are going to show up on the logo
+        {// text is the input the user enters for what 1-3 letters are going to show up on the logo
             type: 'input',
-            name: 'logoText',
+            name: 'text',
             message: 'Please enter the text for your logo, you can enter up to 3 characters',
             validate: (input) => {//validate checks if the provided function returns true and if not allows the user to reattempt until it does
                 if(input.length<=3) return true;//this validate simply checks if the input is less than 3 characters
@@ -77,16 +40,38 @@ inquirer
         }
     ])
     .then((data) => {
-        //generateSVG is a function that generates and writes to file a valid SVG file based on user input.
-        this.generateSVG(data);
+        //switch statement figures out which kind of new object to make, constructs it and writes the render function to file
+        switch (data.shape) {
+            case 'Circle':
+                const circle = new Circle(data.text, data.color)
+                console.log(circle.render());
+                // fs.writeFile('logo.svg', circle.render(), (err) =>
+                //     err ? console.error(err) : console.log('Generated logo.svg')
+                // );
+                break;
+
+            case 'Triangle':
+                const triangle = new Triangle(data.text, data.color)
+                console.log(triangle.render());
+                // fs.writeFile('logo.svg', circle.render(), (err) =>
+                //     err ? console.error(err) : console.log('Generated logo.svg')
+                // );
+                break;
+
+            case 'Square':
+                const square = new Square(data.text, data.color)
+                console.log(square.render());
+                // fs.writeFile('logo.svg', circle.render(), (err) =>
+                //     err ? console.error(err) : console.log('Generated logo.svg')
+                // );
+                break;
+
+            default:
+                break;
+        }
     })
     .catch((err) => {
         console.error(err);
     })
-}
-module.exports = SVGGenerator;
-
-
-
 
 
