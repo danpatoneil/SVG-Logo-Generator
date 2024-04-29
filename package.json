@@ -6,7 +6,8 @@
     "author": "Daniel O'Neil",
     "license": "MIT",
     "scripts": {
-      "test": "jest"
+      "test": "jest",
+      "start": "node index.js"
     },
     "dependencies": {
         "inquirer": "^8.2.4",
